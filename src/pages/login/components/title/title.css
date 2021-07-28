@@ -1,0 +1,6 @@
+.title label{
+    color: brown;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}

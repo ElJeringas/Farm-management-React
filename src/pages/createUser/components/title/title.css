@@ -1,0 +1,9 @@
+.title-container label{
+    color:brown;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+}
