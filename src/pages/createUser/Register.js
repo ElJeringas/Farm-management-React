@@ -55,8 +55,16 @@ const Register = () =>{
         Axios.post('https://farm-management.xyz/users/signup/', account)
 		.then( ( response ) => {
 			console.log( response.status)
-
+            if(response.status == 201){
+                console.log("tas bien");
+            }else{
+                console.log('tas mal');
+            }
 		} )
+        .catch( (error) =>{
+            // handle error
+            console.log(error);
+        })
     }
 
     

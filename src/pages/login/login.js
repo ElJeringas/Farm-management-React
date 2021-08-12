@@ -6,6 +6,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core';
+import Modal from '@material-ui/core/Modal';
+
 
 
 
@@ -14,9 +17,13 @@ const Login = () => {
     const [password, setPassword]=useState('');
     const history=useHistory();
 
+
     const registro = () =>{
         history.push('/register')
     }
+
+
+
 
 
     function handleChange(name, value){
@@ -32,8 +39,24 @@ const Login = () => {
         console.log(account);
         Axios.post('https://farm-management.xyz/users/login/', account)
 		.then( ( response ) => {
-			console.log( response )
+			console.log( response.status )            
+            if(response.status == 201){
+                console.log("tas bien");
+                console.log(response.data["token"]);
+                let token = response.data["token"];
+                localStorage.setItem('token',token);
+                history.push('/farm');
+
+            }else{
+                console.log('tas mal');
+            }
 		} )
+        .catch( (error) =>{
+            // handle error
+            console.log(error);
+        })
+
+
     }
 
     const StyledButton = withStyles({
