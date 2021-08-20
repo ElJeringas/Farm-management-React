@@ -13,6 +13,13 @@ const apiUrl = 'https://farm-management.xyz/lands/';
 const Farm = () => {
     const [name, setName] = useState('');
     const [location, setLocation]=useState('');
+    const history=useHistory();
+
+
+    const animal = () =>{
+        history.push('/Animal')
+    }
+
 
  
 
@@ -85,7 +92,11 @@ const Farm = () => {
                         <Button variant="contained" color="primary" onClick={handleSubmit}>
                             Create
                         </Button>
-                    </div>                    
+                    </div>
+                    <div >
+                        ¿crear animal? {'\n'}
+                        <Button color="secondary" onClick={()=> animal() }>animal</Button>
+                    </div>                                        
                     </div>
 
                 </div>
