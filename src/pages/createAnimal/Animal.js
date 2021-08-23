@@ -2,12 +2,13 @@ import React, { useState , Component} from 'react';
 import './createAnimal.css';
 import { Typography } from '@material-ui/core';
 import InputAnimal from './InputAnimal';
-import InputPhoto from './inputPhoto' 
+import { useHistory } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Save } from '@material-ui/icons';
 import axios from 'axios';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const CssTextField = withStyles({
     input: {
@@ -45,11 +46,15 @@ const Animal = () => {
     
     const [name, setName] = useState('');
     const[birth_date,setBirth] = useState('');
-/*     const [picture, setPicture] = useState(null);
- */    const[gender, setGender] = useState('');
+    const history=useHistory();
+    const[gender, setGender] = useState('');
     const[weight, setWeight] = useState('');
     const [breed, setBreed] = useState('');
     const [group, setGroup] = useState('');
+
+    const Back = () =>{
+        history.push('/home')
+    }
 
     
         const [picture,setPicture]=useState();
@@ -92,9 +97,9 @@ const Animal = () => {
 
     function handleSubmit(){
         /* let account = {name,birth_date,picture,gender,weight,breed,group}; */
-/*         let token = localStorage.getItem('token');
- */        let token = "109e218fcb947f52dd5bda59aa54b811d7b47925";
-        console.log(token);
+            let token = localStorage.getItem('token');
+/*         let token = "109e218fcb947f52dd5bda59aa54b811d7b47925";
+ */        console.log(token);
         console.log(picture);
         let account = {name,birth_date,gender};
         let formData = new FormData();
@@ -107,7 +112,7 @@ const Animal = () => {
         console.log(formData.getAll('picture'));
 
 
-        const api = 'https://farm-management.xyz/lands/2/animals/'; 
+        const api = 'https://farm-management.xyz/lands/4/animals/'; 
 
 
         axios.post(api ,formData,{ headers: {"Content-type": "multipart/form-data'", "Authorization" : `Token ${token}`} })
@@ -189,6 +194,9 @@ const Animal = () => {
                         />                                  
                         <StyledButton startIcon={<Save/>} onClick={handleSubmit}>
                             Save
+                        </StyledButton>
+                        <StyledButton variant= "outlined" startIcon={<ArrowBackIcon/>} onClick={Back}>
+                            Volver
                         </StyledButton>
 
 

@@ -6,8 +6,9 @@ import Axios from 'axios';
 import Input from './farm_components/Input';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
 const apiUrl = 'https://farm-management.xyz/lands/';
-/* let token = localStorage.getItem('token'); */
 
 
 const Farm = () => {
@@ -21,7 +22,9 @@ const Farm = () => {
     }
 
 
- 
+    const Back = () =>{
+        history.push('/home')
+    }
 
 
     function handleChange(name, value){
@@ -88,15 +91,18 @@ const Farm = () => {
                             handleChange={handleChange}
                         />
 
-                    <div className='submit-button-container'>
+                    <div >
                         <Button variant="contained" color="primary" onClick={handleSubmit}>
-                            Create
+                            Crear
                         </Button>
                     </div>
-                    <div >
+                    <div>
                         ¿crear animal? {'\n'}
-                        <Button color="secondary" onClick={()=> animal() }>animal</Button>
-                    </div>                                        
+                        <Button variant = "outlined" color="secondary" onClick={()=> animal() }>animal</Button>
+                    </div> 
+                    <Button variant="contained" color="primary" startIcon={<ArrowBackIcon/>} onClick={Back}>
+                            Volver
+                    </Button>                                       
                     </div>
 
                 </div>

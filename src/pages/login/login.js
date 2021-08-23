@@ -45,7 +45,7 @@ const Login = () => {
                 console.log(response.data["token"]);
                 let token = response.data["token"];
                 localStorage.setItem('token',token);
-                history.push('/farm');
+                history.push('/home');
 
             }else{
                 console.log('tas mal');
