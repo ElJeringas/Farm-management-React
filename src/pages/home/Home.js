@@ -77,34 +77,7 @@ const useStyles = makeStyles({
          {image:groups,title:"Grupos",text:"crear grupos",go:(e => Finca()),get:null},
          {image:farmer,title:"Usuarios",text:"crear usuarios",go:null/* (e => registro()) */,get:null},
      ]; 
-/* const renderCard = (card,index)=>{
-    return(
-        <div className={styles.grd}>
-            <Grid container spacing={0} direction="row" justify="center" alignItems="center" style={{ minHeight: '100vh' }} >
-                <Grid  items xs={12} sm={6} md={6}>
-                    <Card className={classes.root} key={index}>
-                        <CardMedia className={classes.media} image={card.image} title="farm"/>
-                        <CardContent>
-                            <Typography component="p" variant="h7">
-                                {card.title}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button  size="small" variant ="outlined" color="primary" onClick={card.go}>
-                                crear
-                            </Button>
-                            <Button size="small" variant ="outlined" color="primary"onClick={card.get}>
-                                Ver
-                            </Button>                
-                        </CardActions>
-                    </Card>
-                </Grid>
-                
-                
-            </Grid>
-        </div>
-    )
-} */
+
         return (
             <div className="home-container" >
                 <div className="home-content">

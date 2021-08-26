@@ -39,7 +39,6 @@ const Input = ({attribute,handleChange}) => {
     return (
         <div >
             <CssTextField  margin="none" variant="outlined" 
-
                 id={attribute.id} /* identificar con que input estamos trabajando */
                 label={attribute.name}
                 name={attribute.name} /* trabajar con accesibilidad y trabajar con funciones dinamicas */

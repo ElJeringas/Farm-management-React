@@ -4,11 +4,27 @@ import { Typography } from '@material-ui/core';
 import InputAnimal from './InputAnimal';
 import { useHistory } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
-import { Button } from '@material-ui/core';
+import { Card,CardActions,Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Save } from '@material-ui/icons';
 import axios from 'axios';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+
+    root: {
+        minWidth:"500px",
+        margin:"1em",
+        boxSizing:"border-box",
+        maxWidth: 800,
+        minHeight:500,
+        maxHeight:800,
+        backgroundColor:"#FFF8DC",
+    },
+
+    
+  });
 
 const CssTextField = withStyles({
     input: {
@@ -43,7 +59,8 @@ const CssTextField = withStyles({
 
 
 const Animal = () => {
-    
+    const classes = useStyles();
+
     const [name, setName] = useState('');
     const[birth_date,setBirth] = useState('');
     const history=useHistory();
@@ -112,7 +129,7 @@ const Animal = () => {
         console.log(formData.getAll('picture'));
 
 
-        const api = 'https://farm-management.xyz/lands/4/animals/'; 
+        const api = 'https://farm-management.xyz/lands/3/animals/'; 
 
 
         axios.post(api ,formData,{ headers: {"Content-type": "multipart/form-data'", "Authorization" : `Token ${token}`} })
@@ -157,6 +174,7 @@ const Animal = () => {
             <div>
                 <div className='animal-container'>
                     <div className='animal-content'>
+                        <Card className={classes.root} >
                         <Typography align='center' variant='h5'>
                             Crear animal
                         </Typography>
@@ -191,13 +209,16 @@ const Animal = () => {
                                 placeholder: 'Animal gender'
                             }}
                             handleChange={handleChange} 
-                        />                                  
+                        /> 
+                        <CardActions>                                 
                         <StyledButton startIcon={<Save/>} onClick={handleSubmit}>
                             Save
                         </StyledButton>
                         <StyledButton variant= "outlined" startIcon={<ArrowBackIcon/>} onClick={Back}>
                             Volver
                         </StyledButton>
+                        </CardActions>
+                        </Card>
 
 
                     </div>

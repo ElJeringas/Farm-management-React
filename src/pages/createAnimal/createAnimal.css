@@ -6,7 +6,8 @@
     position: relative;
     width: 100%;
     height: 100vh;
-    /* color: white; */
+    background: rgb(199, 197, 193);
+    background: linear-gradient(90deg, rgba(255,153,0,0.5245448521205357) 5%, rgba(249,170,51,0.5245448521205357) 100%);
 
 }
 

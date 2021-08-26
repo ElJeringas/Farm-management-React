@@ -2,15 +2,44 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
+    width: 100%;
+    height: 100vh;
+    background: white;
+/*     background-image: url('c:/Users/Santiago/Desktop/Ruray/login-ruray-web/src/assets/images/fondo.jpg');
+    background-size: 100%;
+    background-position: absolute; */
 }
 
 .login-content{
+    float: left;
+    padding-left: 5rem;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 20rem;
+    height: 80%;
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100vh;
     justify-content: center;
-    align-items: center;
-    
+    /* align-items: center; */
+    margin:initial;
+    margin-left: 5rem;
+    position: absolute;
+    /* border: 1px solid #f9aa33; */
+    background-color:#0d0d0e1c;
+    border-radius: 20px;
+    /* opacity: 0.2; */
+}
+
+.submit-button-container{
+    display: flex;
+    /* justify-content: center; */
+    float: left;
+    /* align-items: center; */
+    /* margin-top: 20px; */
+}
+
+
+.register-button-container{
+    float: left;
 }

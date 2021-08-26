@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './login.css'
 import Title from './components/title/title';
 import Input from './components/input/input';
 import { withStyles } from '@material-ui/core/styles';
@@ -7,9 +6,10 @@ import Button from '@material-ui/core/Button';
 import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
-import Modal from '@material-ui/core/Modal';
-
-
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { InputAdornment } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
+import './login.css';
 
 
 const Login = () => {
@@ -81,12 +81,20 @@ const Login = () => {
         <div>
 
     <div className='login-container'>
-
     <div className='login-content'>
 
         <Title text='Farm Management'/>
 
-        <Input 
+        <Input
+            InputProps={{
+                endAdornment:(
+                    <InputAdornment position="end">
+                        <IconButton edge="end">
+                            <AccountCircleIcon/>
+                        </IconButton>
+                    </InputAdornment>
+                )
+            }}
             attribute={{
                 id:'usuario',
                 label:'Contraseña',
@@ -94,9 +102,7 @@ const Login = () => {
                 type: 'text',
                 placeholder: 'Ingrese su usuario'
             }}
-
             handleChange={handleChange}
-    
         />
         <Input  
             attribute={{
@@ -117,7 +123,7 @@ const Login = () => {
         </div>
 
         
-        <div >
+        <div className="register-button-container">
             ¿No tienes una cuenta? {'\n'}
             <Button color="secondary" onClick={()=> registro() }>Regístrate</Button>
         </div>

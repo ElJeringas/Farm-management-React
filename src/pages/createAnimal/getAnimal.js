@@ -36,7 +36,7 @@ function GetAnimal() {
     let token = localStorage.getItem('token');
     const[posts, setPosts]=useState([]);
     useEffect(()=>{
-        axios.get("https://farm-management.xyz/lands/4/animals/",{ headers: { "Authorization" : `Token ${token}`}})
+        axios.get("https://farm-management.xyz/lands/3/animals/",{ headers: { "Authorization" : `Token ${token}`}})
             .then(res=>{
                 console.log(res);
                 setPosts(res.data);

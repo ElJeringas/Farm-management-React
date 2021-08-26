@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
-
+import Popup from '../Popup/Popup';
 
 
 
@@ -57,6 +57,11 @@ const Register = () =>{
 			console.log( response.status)
             if(response.status == 201){
                 console.log("tas bien");
+                return(
+                    <Popup trigger={true}>
+                    <h3>Todo bien</h3>
+                    </Popup>
+                )
             }else{
                 console.log('tas mal');
             }
@@ -166,9 +171,10 @@ const Register = () =>{
                         <div className='register-container'>
                             ¿Ya tienes una cuenta?
                             <Button color="secondary" onClick={()=> logeo() }>Entrar</Button>
-                        </div>                    
+                        </div>                
                     </div>
                 </div>
+
             </div>
         )
     
