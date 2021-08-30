@@ -11,7 +11,13 @@ import axios from 'axios';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles({
+
+import PropTypes from 'prop-types';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
+
+const useStyles = makeStyles((theme) => ({
 
     root: {
         minWidth:"500px",
@@ -23,8 +29,19 @@ const useStyles = makeStyles({
         backgroundColor:"#FFF8DC",
     },
 
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      paper: {
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+      },
     
-  });
+  }));
 
 const CssTextField = withStyles({
     input: {
@@ -58,6 +75,38 @@ const CssTextField = withStyles({
   })(TextField);
 
 
+
+  const Fade = React.forwardRef(function Fade(props, ref) {
+    const { in: open, children, onEnter, onExited, ...other } = props;
+    const style = useSpring({
+      from: { opacity: 0 },
+      to: { opacity: open ? 1 : 0 },
+      onStart: () => {
+        if (open && onEnter) {
+          onEnter();
+        }
+      },
+      onRest: () => {
+        if (!open && onExited) {
+          onExited();
+        }
+      },
+    });
+  
+    return (
+      <animated.div ref={ref} style={style} {...other}>
+        {children}
+      </animated.div>
+    );
+  });
+  
+  Fade.propTypes = {
+    children: PropTypes.element,
+    in: PropTypes.bool.isRequired,
+    onEnter: PropTypes.func,
+    onExited: PropTypes.func,
+  };
+
 const Animal = () => {
     const classes = useStyles();
 
@@ -68,7 +117,15 @@ const Animal = () => {
     const[weight, setWeight] = useState('');
     const [breed, setBreed] = useState('');
     const [group, setGroup] = useState('');
-
+    const [open, setOpen] = React.useState(false);
+  
+   /*  const handleOpen = () => {
+      setOpen(true);
+    }; */
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
     const Back = () =>{
         history.push('/home')
     }
@@ -139,6 +196,7 @@ const Animal = () => {
             if(response.status == 201){
                 console.log("tas bien");
                 console.log(response.data);
+                setOpen(true);
             }else{
                 console.log('tas mal');
             }
@@ -223,6 +281,26 @@ const Animal = () => {
 
                     </div>
                 </div>
+
+                <Modal
+                    aria-labelledby="spring-modal-title"
+                    aria-describedby="spring-modal-description"
+                    className={classes.modal}
+                    open={open}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={open}>
+                        <div className={classes.paper}>
+                            <h2 id="spring-modal-title">Animal creado</h2>
+                            <p id="spring-modal-description">su animal: {name}, ha sido creado en la finca nro </p>  {/* falta agregar id finca */}
+                        </div> 
+                    </Fade>
+                </Modal>
             </div>
         )
     

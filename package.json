@@ -2,9 +2,13 @@
   "name": "react-farm",
   "version": "0.1.0",
   "private": true,
+  "peerDependencies": {
+    "react-spring": "^8.0.27"
+  },
   "dependencies": {
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.11.2",
+    "@react-spring/web": "^9.2.4",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",

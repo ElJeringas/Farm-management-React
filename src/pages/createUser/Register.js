@@ -6,7 +6,60 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import Popup from '../Popup/Popup';
+import SpringModal from '../Popup/Popup';
+
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
+
+const useStyles = makeStyles((theme) => ({
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paper: {
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+  }));
+  
+  const Fade = React.forwardRef(function Fade(props, ref) {
+    const { in: open, children, onEnter, onExited, ...other } = props;
+    const style = useSpring({
+      from: { opacity: 0 },
+      to: { opacity: open ? 1 : 0 },
+      onStart: () => {
+        if (open && onEnter) {
+          onEnter();
+        }
+      },
+      onRest: () => {
+        if (!open && onExited) {
+          onExited();
+        }
+      },
+    });
+  
+    return (
+      <animated.div ref={ref} style={style} {...other}>
+        {children}
+      </animated.div>
+    );
+  });
+
+
+  Fade.propTypes = {
+    children: PropTypes.element,
+    in: PropTypes.bool.isRequired,
+    onEnter: PropTypes.func,
+    onExited: PropTypes.func,
+  };
+
 
 
 
@@ -19,6 +72,22 @@ const Register = () =>{
     const[password, setPassword] = useState('');
     const [password_confirmation, setConfPass] = useState('');
     const history=useHistory();
+
+
+    //******************* */
+
+    const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+  
+/*     const handleOpen = () => {
+      setOpen(true);
+    };
+   */
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    //******************** */
 
     const logeo = () =>{
         history.push('/')
@@ -57,19 +126,14 @@ const Register = () =>{
 			console.log( response.status)
             if(response.status == 201){
                 console.log("tas bien");
-                return(
-                    <Popup trigger={true}>
-                    <h3>Todo bien</h3>
-                    </Popup>
-                )
-            }else{
-                console.log('tas mal');
+                setOpen(true);
             }
 		} )
         .catch( (error) =>{
             // handle error
             console.log(error);
-        })
+/*             setOpen(true);
+ */        })
     }
 
     
@@ -167,6 +231,7 @@ const Register = () =>{
 
                         <StyledButton onClick={handleSubmit}>
                             Register
+                            {/* <Popup /> */}
                         </StyledButton>    
                         <div className='register-container'>
                             ¿Ya tienes una cuenta?
@@ -174,6 +239,26 @@ const Register = () =>{
                         </div>                
                     </div>
                 </div>
+                
+                <Modal
+                    aria-labelledby="spring-modal-title"
+                    aria-describedby="spring-modal-description"
+                    className={classes.modal}
+                    open={open}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={open}>
+                        <div className={classes.paper}>
+                            <h2 id="spring-modal-title">Registro exitoso!</h2>
+                            <p id="spring-modal-description">Revise bandeja de entrada del correo para validar la verificacion de su usuario</p>
+                        </div>
+                    </Fade>
+                </Modal>
 
             </div>
         )
