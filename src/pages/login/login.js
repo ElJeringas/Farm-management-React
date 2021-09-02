@@ -16,6 +16,8 @@ const Login = () => {
     const [username, setUser] = useState('');
     const [password, setPassword]=useState('');
     const history=useHistory();
+    const [isLogin, setIsLogin] = useState(false);
+    const [hasError, sethasError] = useState(false);
 
 
     const registro = () =>{
@@ -34,7 +36,7 @@ const Login = () => {
         }
     }
 
-    function handleSubmit (){
+    function handleSubmit (param){
         let account = {username,password}
         console.log(account);
         Axios.post('https://farm-management.xyz/users/login/', account)
@@ -45,15 +47,15 @@ const Login = () => {
                 console.log(response.data["token"]);
                 let token = response.data["token"];
                 localStorage.setItem('token',token);
+                setIsLogin(true);
                 history.push('/home');
 
-            }else{
-                console.log('tas mal');
-            }
-		} )
+            }})
         .catch( (error) =>{
             // handle error
             console.log(error);
+            setIsLogin(false);
+            sethasError(true);
         })
 
 
@@ -84,6 +86,13 @@ const Login = () => {
     <div className='login-content'>
 
         <Title text='Farm Management'/>
+
+        { hasError &&
+                <label className='label-alert'>
+                        Su contraseña o usuario son incorrectos,
+                        o no existen en nuestra plataforma
+                </label>
+            }
 
         <Input
             InputProps={{

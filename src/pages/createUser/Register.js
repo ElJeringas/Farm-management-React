@@ -6,8 +6,6 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import SpringModal from '../Popup/Popup';
-
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';

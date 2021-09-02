@@ -10,8 +10,7 @@ import { Save } from '@material-ui/icons';
 import axios from 'axios';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { makeStyles } from '@material-ui/core';
-
-
+import Asynchronous from './Asynchronous';
 import PropTypes from 'prop-types';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -186,7 +185,7 @@ const Animal = () => {
         console.log(formData.getAll('picture'));
 
 
-        const api = 'https://farm-management.xyz/lands/3/animals/'; 
+        const api = 'https://farm-management.xyz/lands/24/animals/'; 
 
 
         axios.post(api ,formData,{ headers: {"Content-type": "multipart/form-data'", "Authorization" : `Token ${token}`} })
@@ -268,6 +267,7 @@ const Animal = () => {
                             }}
                             handleChange={handleChange} 
                         /> 
+                        <Asynchronous/>
                         <CardActions>                                 
                         <StyledButton startIcon={<Save/>} onClick={handleSubmit}>
                             Save

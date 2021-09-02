@@ -55,6 +55,10 @@ const useStyles = makeStyles({
     const Finca = () =>{
         history.push('/farm')
     }
+    
+    const Breeds = () =>{
+        history.push('/Breeds')
+    }
 
     const getAnimal = () =>{
         history.push('/GetAnimal')
@@ -62,6 +66,10 @@ const useStyles = makeStyles({
 
     const getLand = () =>{
         history.push('/GetLand')
+    }
+
+    const getBreed = () =>{
+        history.push('/GetBreeds')
     }
 
     const logOut = () =>{
@@ -74,8 +82,8 @@ const useStyles = makeStyles({
      const cardInfo = [
          {image:berja,title:"Fincas",text:"crear Fincas",go:(e => Finca()),get:(e => getLand())},
          {image:pig,title:"Animales",text:"crear animales",go:(e => Animal()),get:(e => getAnimal())},
-         {image:groups,title:"Grupos",text:"crear grupos",go:(e => Finca()),get:null},
-         {image:farmer,title:"Usuarios",text:"crear usuarios",go:null/* (e => registro()) */,get:null},
+         {image:groups,title:"Razas",text:"crear razas",go:(e => Breeds()),get:(e => getBreed()) },
+         {image:farmer,title:"Usuarios",text:"crear usuarios",go:null/* (e => getBreed()) */,get:null},
      ]; 
 
         return (

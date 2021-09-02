@@ -4,6 +4,7 @@ import { Card,CardMedia,CardContent,Typography,CardActions,Button } from '@mater
 import { makeStyles } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
 import './getAnimal.css';
 
 
@@ -36,7 +37,7 @@ function GetAnimal() {
     let token = localStorage.getItem('token');
     const[posts, setPosts]=useState([]);
     useEffect(()=>{
-        axios.get("https://farm-management.xyz/lands/3/animals/",{ headers: { "Authorization" : `Token ${token}`}})
+        axios.get("https://farm-management.xyz/lands/1/animals/",{ headers: { "Authorization" : `Token ${token}`}})
             .then(res=>{
                 console.log(res);
                 setPosts(res.data);
@@ -69,6 +70,11 @@ function GetAnimal() {
                                     <b>id:</b> {post.id}
                                 </Typography>
                             </CardContent>
+                            <CardActions>
+                                <Button size="small" variant ="contained" color="secondary" /* onClick={} */>
+                                        Borrar
+                                </Button>                
+                            </CardActions>     
                         </Card>
                     ))}
 
