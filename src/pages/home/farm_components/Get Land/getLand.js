@@ -30,13 +30,15 @@ const useStyles = makeStyles({
 export default function GetLand() {
     const classes = useStyles();
     const history=useHistory();
+    const URL = "https://farm-management.xyz/lands/"
+
     const Back = () =>{
         history.push('/home')
     }
     let token = localStorage.getItem('token');
     const[posts, setPosts]=useState([]);
     useEffect(()=>{
-        axios.get("https://farm-management.xyz/lands/",{ headers: { "Authorization" : `Token ${token}`}})
+        axios.get(URL,{ headers: { "Authorization" : `Token ${token}`}})
             .then(res=>{
                 console.log(res);
                 setPosts(res.data);
@@ -45,32 +47,42 @@ export default function GetLand() {
                 console.log(err);
             })
     })
+
+    const removeData = (id) => {
+
+        axios.delete(`${URL}${id}/`,{ headers: { "Authorization" : `Token ${token}`}})
+    }
+
+    const renderBody = () => {
+        return posts && posts.map(({ id, name, location}) => {
+            return (
+                <Card className={classes.root} >
+                    <CardMedia className={classes.media} image={farmicon} title="land"/>
+                        <CardContent>
+                            <Typography component="p" variant="h7" gutterBottom>
+                                <b>Nombre:</b> {name}
+                            </Typography>
+                            <Typography variant="body2" component="p">
+                                <b>Ubicacion:</b> {location}
+                            </Typography>
+                            <Typography variant="caption" component="p" align="right">
+                                <b>id:</b> {id}
+                            </Typography>
+                        </CardContent>
+                <CardActions>
+                    <Button size="small" variant ="contained" color="secondary" onClick={() => removeData(id)}>
+                            Borrar
+                    </Button>                
+                </CardActions>                            
+            </Card>
+            )
+        })
+    }
     return (
         <div>
             <div className="get-container">
                 <div className="get-content">
-                    {posts.map(post=>(
-                        <Card className={classes.root} >
-                            <CardMedia className={classes.media} image={farmicon} title="land"/>
-                            <CardContent>
-                                <Typography component="p" variant="h7" gutterBottom>
-                                   <b>Nombre:</b> {post.name}
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                    <b>Ubicacion:</b> {post.location}
-                                </Typography>
-                                <Typography variant="caption" component="p" align="right">
-                                    <b>id:</b> {post.id}
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" variant ="contained" color="secondary" /* onClick={} */>
-                                        Borrar
-                                </Button>                
-                            </CardActions>     
-                        </Card>
-                    ))}
-
+                    {renderBody()}
                     <Button variant="contained" color="primary" startIcon={<ArrowBackIcon/>} onClick={Back}>
                             Volver
                     </Button>     

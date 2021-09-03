@@ -1,4 +1,4 @@
-import React, { useState , Component} from 'react';
+import React,{useState,useEffect} from 'react'
 import './createAnimal.css';
 import { Typography } from '@material-ui/core';
 import InputAnimal from './InputAnimal';
@@ -15,6 +15,9 @@ import PropTypes from 'prop-types';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
+import { Select } from '@material-ui/core';
+import { MenuItem,FormControl,InputLabel,FormHelperText } from '@material-ui/core';
+
 
 const useStyles = makeStyles((theme) => ({
 
@@ -26,6 +29,11 @@ const useStyles = makeStyles((theme) => ({
         minHeight:500,
         maxHeight:800,
         backgroundColor:"#FFF8DC",
+    },
+
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
     },
 
     modal: {
@@ -108,19 +116,46 @@ const CssTextField = withStyles({
 
 const Animal = () => {
     const classes = useStyles();
-
     const [name, setName] = useState('');
     const[birth_date,setBirth] = useState('');
     const history=useHistory();
+    const [idSelecter, setIdSelecter] = useState('')
     const[gender, setGender] = useState('');
     const[weight, setWeight] = useState('');
-    const [breed, setBreed] = useState('');
-    const [group, setGroup] = useState('');
+/*     const [breed, setBreed] = useState(''); */
+   // const [group, setGroup] = useState('');
+   let token = localStorage.getItem('token');
+
     const [open, setOpen] = React.useState(false);
+    
+    const URL = "https://farm-management.xyz/lands/" //url de land
+    const[getLands, setGetLands]=useState([]);
+
+    function LandSelect(event){
+      const id = event.target.value;
+      setIdSelecter(id);
+      console.log(id)
+    }
+
+    useEffect(()=>{ //get de lands
+      axios.get(URL,{ headers: { "Authorization" : `Token ${token}`}})
+          .then(res=>{
+/*               console.log(res);
+ */              setGetLands(res.data);
+          })
+          .catch(err=>{
+              console.log(err);
+          })
+  })
   
-   /*  const handleOpen = () => {
-      setOpen(true);
-    }; */
+  const renderBody = () => {
+    return getLands && getLands.map(({id,name}) => {
+
+        return (
+        <MenuItem value={id}>{name}</MenuItem>
+        )
+    })
+}
   
     const handleClose = () => {
       setOpen(false);
@@ -135,7 +170,6 @@ const Animal = () => {
         function fileSelected(event){
             const file = event.target.files[0];
             setPicture(event.target.files[0]);
-            console.log(picture);
         }
 
     function handleChange(valid, value){
@@ -169,11 +203,7 @@ const Animal = () => {
 
 
     function handleSubmit(){
-        /* let account = {name,birth_date,picture,gender,weight,breed,group}; */
-            let token = localStorage.getItem('token');
-/*         let token = "109e218fcb947f52dd5bda59aa54b811d7b47925";
- */        console.log(token);
-        console.log(picture);
+        let token = localStorage.getItem('token');
         let account = {name,birth_date,gender};
         let formData = new FormData();
         formData.append('name',name)
@@ -182,22 +212,16 @@ const Animal = () => {
         formData.append('gender',gender)
 
 
-        console.log(formData.getAll('picture'));
 
-
-        const api = 'https://farm-management.xyz/lands/24/animals/'; 
+        const api = `${URL}${idSelecter}/animals/`; 
 
 
         axios.post(api ,formData,{ headers: {"Content-type": "multipart/form-data'", "Authorization" : `Token ${token}`} })
         .then( ( response ) => {
-            console.log( response.status )
-            console.log(response.data);
             if(response.status == 201){
                 console.log("tas bien");
                 console.log(response.data);
                 setOpen(true);
-            }else{
-                console.log('tas mal');
             }
         } )
         .catch( (error) =>{
@@ -267,7 +291,18 @@ const Animal = () => {
                             }}
                             handleChange={handleChange} 
                         /> 
-                        <Asynchronous/>
+                         <FormControl className={classes.formControl}>
+                          <InputLabel id="demo-simple-select-autowidth-label">Finca</InputLabel>
+                          <Select
+                            labelId="land"
+                            id="land"
+                            onChange={(e) => LandSelect(e)}
+                            autoWidth
+                          >
+                            {renderBody()}
+                          </Select>
+                          <FormHelperText>Finca en la que crea el animal</FormHelperText>
+                        </FormControl>
                         <CardActions>                                 
                         <StyledButton startIcon={<Save/>} onClick={handleSubmit}>
                             Save
@@ -297,7 +332,7 @@ const Animal = () => {
                     <Fade in={open}>
                         <div className={classes.paper}>
                             <h2 id="spring-modal-title">Animal creado</h2>
-                            <p id="spring-modal-description">su animal: {name}, ha sido creado en la finca nro </p>  {/* falta agregar id finca */}
+                            <p id="spring-modal-description">su animal: {name}, ha sido creado exitosamente </p>  {/* falta agregar id finca */}
                         </div> 
                     </Fade>
                 </Modal>

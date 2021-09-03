@@ -30,60 +30,72 @@ const useStyles = makeStyles({
 export default function GetBreeds() {
     const classes = useStyles();
     const history=useHistory();
+    const URL = "https://farm-management.xyz/breeds/"
     const Back = () =>{
         history.push('/home')
     }
     let token = localStorage.getItem('token');
     const[posts, setPosts]=useState([]);
-    const [id, setId] = useState('')
 
     useEffect(()=>{
-        axios.get("https://farm-management.xyz/breeds/",{ headers: { "Authorization" : `Token ${token}`}})
+        axios.get(URL,{ headers: { "Authorization" : `Token ${token}`}})
             .then(res=>{
                 console.log(res);
                 setPosts(res.data);
-                setId(res.id);
             })
             .catch(err=>{
                 console.log(err);
             })
     })
+
+    const removeData = (id) => {
+
+        axios.delete(`${URL}${id}/`,{ headers: { "Authorization" : `Token ${token}`}})
+    }
+
+
+    const renderBody = () => {
+        return posts && posts.map(({ id, name, purpose, description,created,modified }) => {
+            return (
+
+                
+                <Card className={classes.root} >
+                <CardMedia className={classes.media} image={breed} title="land"/>
+                <CardContent>
+                    <Typography component="p" variant="h7" gutterBottom>
+                       <b>Nombre:</b> {name}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                        <b>Descripcion:</b> {description}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                        <b>Proposito:</b> {purpose}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                        <b>Creada:</b> {created}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                        <b>Modificada:</b> {modified}
+                    </Typography>                                                                                                
+                    <Typography variant="caption" component="p" align="right">
+                        <b>id:</b> {id}
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <Button size="small" variant ="contained" color="secondary" onClick={() => removeData(id)}>
+                            Borrar
+                    </Button>                
+                </CardActions>                            
+            </Card>
+            )
+        })
+    }
+
     return (
         <div>
             <div className="get-container">
-                <div className="get-content">
-                    {posts.map(post=>(
-
-                        <Card className={classes.root} >
-                            <CardMedia className={classes.media} image={breed} title="land"/>
-                            <CardContent>
-                                <Typography component="p" variant="h7" gutterBottom>
-                                   <b>Nombre:</b> {post.name}
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                    <b>Descripcion:</b> {post.description}
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                    <b>Proposito:</b> {post.purpose}
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                    <b>Creada:</b> {post.created}
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                    <b>Modificada:</b> {post.modified}
-                                </Typography>                                                                                                
-                                <Typography variant="caption" component="p" align="right">
-                                    <b>id:</b> {post.id}
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" variant ="contained" color="secondary" onClick={axios.delete("https://farm-management.xyz/breeds/"`${post.id}`,{ headers: { "Authorization" : `Token ${token}`}})}>
-                                        Borrar
-                                </Button>                
-                            </CardActions>                            
-                        </Card>
-                    ))}
-
+                <div className="get-content"> 
+                    {renderBody()}
                     <Button variant="contained" color="primary" startIcon={<ArrowBackIcon/>} onClick={Back}>
                             Volver
                     </Button>     
