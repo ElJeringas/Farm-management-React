@@ -14,6 +14,7 @@ import GetAnimal from '../createAnimal/getAnimal';
 import GetLand from '../home/farm_components/Get Land/getLand';
 import Breeds from '../Breeds/Breeds';
 import GetBreeds from '../Breeds/getBreeds';
+import Groups from '../Groups/Groups';
 export default ()=> ( 
     //add the url of login/register, feed, product, profile,etc
     <Router>
@@ -27,6 +28,7 @@ export default ()=> (
         <Route path ="/home" exact component={Home} />
         <Route path ="/animal" exact component={Animal} />
         <Route path ="/register" exact component={Register}/> 
+        <Route path ="/groups" exact component={Groups}/> 
         </Switch>
     </Router>
 )

@@ -72,7 +72,13 @@ export default function GetLand() {
                 <CardActions>
                     <Button size="small" variant ="contained" color="secondary" onClick={() => removeData(id)}>
                             Borrar
-                    </Button>                
+                    </Button>
+                    <Button size="small" variant ="outlined" color="primary" /* onClick={() => removeData(id)} */>
+                            Crear Grupo
+                    </Button>
+                    <Button size="small" variant ="outlined" color="primary" /* onClick={() => removeData(id)} */>
+                            Crear Potrero
+                    </Button>                                                           
                 </CardActions>                            
             </Card>
             )

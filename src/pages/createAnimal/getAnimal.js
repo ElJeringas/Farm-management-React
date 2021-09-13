@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Select } from '@material-ui/core';
 import { MenuItem,FormControl,InputLabel,FormHelperText } from '@material-ui/core';
+import functionGetLand from '/Users/Santiago/Desktop/React - Farm/react-farm/src/commons/methods/land/functionGetLand'
 import './getAnimal.css';
 
 
@@ -31,7 +32,7 @@ const useStyles = makeStyles({
 
 function GetAnimal() {
     const classes = useStyles();
-    
+
     const history=useHistory();
     const Back = () =>{
         history.push('/home')
@@ -42,8 +43,16 @@ function GetAnimal() {
     const[getLands, setGetLands]=useState([]); //land
     const [idSelecter, setIdSelecter] = useState('') //selector land
     const [isOpen, setisOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
-    useEffect(()=>{ //get de lands
+    const handleClose = () => {
+        setOpen(false);
+    };
+    
+      const handleOpen = () => {
+        setOpen(true);
+    };
+    {open && //get de lands
         axios.get(URL,{ headers: { "Authorization" : `Token ${token}`}})
             .then(res=>{
   /*               console.log(res);
@@ -52,14 +61,22 @@ function GetAnimal() {
             .catch(err=>{
                 console.log(err);
             })
-    })
+}
 
     function LandSelect(event){ //selector de fincas
         const id = event.target.value;
         setIdSelecter(id);
-        setisOpen(true);
-        console.log(id)
-
+        console.log(id);
+        const api = `${URL}${id}/animals/`; 
+        axios.get(api,{ headers: { "Authorization" : `Token ${token}`}})
+            .then(res=>{
+/*                 console.log(res);*/
+                setPosts(res.data);
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+            setisOpen(true);
     }
 
     const renderBodyLands = () => {
@@ -75,17 +92,17 @@ function GetAnimal() {
 
     const[posts, setPosts]=useState([]);
 
-    useEffect(()=>{
+/*     useEffect(()=>{
         const api = `${URL}${idSelecter}/animals/`; 
         axios.get(api,{ headers: { "Authorization" : `Token ${token}`}})
             .then(res=>{
-/*                 console.log(res);*/
+/*                 console.log(res);
                 setPosts(res.data);
             })
             .catch(err=>{
                 console.log(err);
             })
-    })
+    }) */
 
     const removeData = (id) => {
 
@@ -133,11 +150,16 @@ function GetAnimal() {
         <div>
             <div className="get-container">
                 <div className="get-content">
+                    <Button size="small" variant ="contained" color="primary" onClick={handleOpen}>
+                        Open the select
+                    </Button>
                     <FormControl className={classes.formControl}>
                         <InputLabel id="demo-simple-select-autowidth-label">Finca</InputLabel>
                           <Select
                             labelId="land"
                             id="land"
+                            onOpen={handleOpen}
+                            onClose={handleClose}
                             onChange={(e) => LandSelect(e)}
                             autoWidth
                           >
