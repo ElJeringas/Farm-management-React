@@ -129,23 +129,41 @@ const Animal = () => {
     
     const URL = "https://farm-management.xyz/lands/" //url de land
     const[getLands, setGetLands]=useState([]);
+    const [isOpen, setisOpen] = useState(false);
 
-    function LandSelect(event){
+    const handleIsClose = () => {
+      setisOpen(false);
+  };
+  
+    const handleIsOpen = () => {
+      setisOpen(true);
+  };
+
+  {isOpen && //get de lands
+    axios.get(URL,{ headers: { "Authorization" : `Token ${token}`}})
+        .then(res=>{
+/*               console.log(res);
+*/              setGetLands(res.data);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+}
+
+    function LandSelect(event){ //selector de fincas
       const id = event.target.value;
       setIdSelecter(id);
-      console.log(id)
-    }
-
-    useEffect(()=>{ //get de lands
-      axios.get(URL,{ headers: { "Authorization" : `Token ${token}`}})
+/*       console.log(id);
+      const api = `${URL}${id}/animals/`; 
+      axios.get(api,{ headers: { "Authorization" : `Token ${token}`}})
           .then(res=>{
-/*               console.log(res);
- */              setGetLands(res.data);
+              setPosts(res.data);
           })
           .catch(err=>{
               console.log(err);
           })
-  })
+          setisOpen(true); */
+  }
   
   const renderBody = () => {
     return getLands && getLands.map(({id,name}) => {
@@ -159,6 +177,7 @@ const Animal = () => {
     const handleClose = () => {
       setOpen(false);
     };
+
     const Back = () =>{
         history.push('/home')
     }
@@ -174,17 +193,13 @@ const Animal = () => {
     function handleChange(valid, value){
         if(valid === 'name'){
             setName(value)
-            
+
         }
 
         if(valid === 'birth_date'){
             setBirth(value);
         }
 
-/*         if(valid === 'picture'){
-            
-            setPicture(value.target.files[0]);
-        } */
         if(valid === 'gender'){
             setGender(value);
         }
@@ -295,12 +310,14 @@ const Animal = () => {
                           <Select
                             labelId="land"
                             id="land"
+                            onOpen={handleIsOpen}
+                            onClose={handleIsClose}
                             onChange={(e) => LandSelect(e)}
                             autoWidth
                           >
                             {renderBody()}
                           </Select>
-                          <FormHelperText>Finca en la que crea el animal</FormHelperText>
+                          <FormHelperText>Seleccionar Finca</FormHelperText>
                         </FormControl>
                         <CardActions>                                 
                         <StyledButton startIcon={<Save/>} onClick={handleSubmit}>

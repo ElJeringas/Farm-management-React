@@ -35,9 +35,19 @@ export default function GetLand() {
     const Back = () =>{
         history.push('/home')
     }
+
+    const GoPaddock = () =>{
+        history.push('/paddocks')
+    }
+    const GoGroup = () =>{
+        history.push('/groups')
+    }
     let token = localStorage.getItem('token');
     const[posts, setPosts]=useState([]);
-    useEffect(()=>{
+    const [open, setOpen] = useState(true);
+
+
+   function ShowLand (){
         axios.get(URL,{ headers: { "Authorization" : `Token ${token}`}})
             .then(res=>{
                 console.log(res);
@@ -46,11 +56,15 @@ export default function GetLand() {
             .catch(err=>{
                 console.log(err);
             })
-    })
+            setOpen(false);
+    }
 
     const removeData = (id) => {
 
         axios.delete(`${URL}${id}/`,{ headers: { "Authorization" : `Token ${token}`}})
+        setOpen(true); //reload the page for each delete action
+        ShowLand();
+        renderBody();
     }
 
     const renderBody = () => {
@@ -73,10 +87,10 @@ export default function GetLand() {
                     <Button size="small" variant ="contained" color="secondary" onClick={() => removeData(id)}>
                             Borrar
                     </Button>
-                    <Button size="small" variant ="outlined" color="primary" /* onClick={() => removeData(id)} */>
+                    <Button size="small" variant ="outlined" color="primary" onClick={GoGroup}>
                             Crear Grupo
                     </Button>
-                    <Button size="small" variant ="outlined" color="primary" /* onClick={() => removeData(id)} */>
+                    <Button size="small" variant ="outlined" color="primary" onClick={GoPaddock}>
                             Crear Potrero
                     </Button>                                                           
                 </CardActions>                            
@@ -88,6 +102,7 @@ export default function GetLand() {
         <div>
             <div className="get-container">
                 <div className="get-content">
+                    {open && ShowLand()}
                     {renderBody()}
                     <Button variant="contained" color="primary" startIcon={<ArrowBackIcon/>} onClick={Back}>
                             Volver

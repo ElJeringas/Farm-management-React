@@ -61,7 +61,7 @@ function GetAnimal() {
             .catch(err=>{
                 console.log(err);
             })
-}
+    }
 
     function LandSelect(event){ //selector de fincas
         const id = event.target.value;
