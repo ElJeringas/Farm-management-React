@@ -1,25 +1,48 @@
 import React, { useState } from 'react';
-import { TextField } from '@material-ui/core';
-import { Button } from '@material-ui/core';
+import { Button,CardActions,Card,Typography } from '@material-ui/core';
 import Title from '../login/components/title/title';
-import Axios from 'axios';
 import Input from './farm_components/Input';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import './Farm.css'
+import land from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/landimage.png'
+import leftback from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/landback.png'
+import { Save } from '@material-ui/icons';
+import { Dialog,DialogContent,DialogContentText,DialogTitle,DialogActions } from '@mui/material';
+
+import { makeStyles } from '@material-ui/core';
 
 const apiUrl = 'https://farm-management.xyz/lands/';
 
+const useStyles = makeStyles((theme) => ({
+
+    root: {
+        minWidth:"30vw",
+        margin:"1em",
+        boxSizing:"border-box",
+        maxWidth: 800,
+        minHeight:300,
+        maxHeight:500,
+        backgroundColor:"#FFF8DC",
+    },
+    
+  }));
+
 
 const Farm = () => {
+    const classes = useStyles();
+
     const [name, setName] = useState('');
     const [location, setLocation]=useState('');
     const history=useHistory();
+    const [isSuccessfully, setIsSuccessfully] = useState(false);
+    const [open, setOpen] = useState(false);
 
-
-    const animal = () =>{
-        history.push('/Animal')
-    }
+    const handleClose = () => {
+        setOpen(false);
+        setIsSuccessfully(false);
+      };
 
 
     const Back = () =>{
@@ -34,6 +57,8 @@ const Farm = () => {
             setLocation(value)    
         }
     }
+    const btnDisabled = name.length > 0 && location.length > 0 ; // this three conditions should have filled for activate the button submmit. 
+
 
     function handleSubmit (){
         let farm = {name,location}
@@ -51,6 +76,7 @@ const Farm = () => {
             if(response.status == 201){
                 console.log("tas bien");
                 console.log(response.data);
+                setIsSuccessfully(true);                
             }else{
                 console.log('tas mal');
             }
@@ -65,8 +91,15 @@ const Farm = () => {
         return (
             <div>
                 <div className='farm-container'>
+                <img className= 'wallpaper-background' src={land} alt="land" width="500" height="500"></img>
+                
+
                     <div className='farm-content'>
-                        <Title text='Farm Create'/>
+{/*                         <Title text='Farm Create'/>
+ */}                        <Card className={classes.root} >
+                        <Typography align='center' variant='h5'>
+                            Crear Finca
+                        </Typography>
                         <Input 
                             attribute={{
                                 id:'name',
@@ -91,20 +124,37 @@ const Farm = () => {
                             handleChange={handleChange}
                         />
 
-                    <div >
-                        <Button variant="contained" color="primary" onClick={handleSubmit}>
+                        <CardActions>                                 
+                        <Button variant="contained" startIcon={<Save/>} disabled={!btnDisabled} color="primary" onClick={handleSubmit}>
                             Crear
                         </Button>
-                    </div>
-                    <div>
-                        ¿crear animal? {'\n'}
-                        <Button variant = "outlined" color="secondary" onClick={()=> animal() }>animal</Button>
-                    </div> 
+                        </CardActions>
+                        <CardActions>
                     <Button variant="contained" color="primary" startIcon={<ArrowBackIcon/>} onClick={Back}>
                             Volver
                     </Button>                                       
-                    </div>
-
+                    </CardActions>                                 
+                    </Card>
+                    <Dialog
+                          open={isSuccessfully}
+                          onClose={handleClose}
+                          aria-labelledby="alert-dialog-title"
+                          aria-describedby="alert-dialog-description"
+                        >
+                        <DialogTitle id="alert-dialog-title">
+                          {"Su finca: "}<b>{name}</b> {" ...Ha sido creada"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Se encuentra disponible para su uso.
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}autoFocus>Cerrar</Button>
+                        </DialogActions>                    
+                    </Dialog> 
+                </div>
+                    <img className= 'wallpaper-background-left' src={leftback} alt="land" width="350" height="350"></img>
                 </div>
             </div>
         )

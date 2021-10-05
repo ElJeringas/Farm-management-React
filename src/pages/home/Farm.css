@@ -1,0 +1,35 @@
+.farm-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background: #eb772a6c;
+    position: absolute;
+
+}
+
+.farm-content{
+    left: 20rem;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin:auto;
+    position: absolute;
+}
+
+.wallpaper-background{
+    display: block;
+    margin-left: auto;
+    float: right;
+    position: static;
+
+
+}
+.wallpaper-background-left{
+    position: absolute;
+    left: 0rem;
+    bottom: 1rem;
+}

@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import axios from 'axios';
 import { Card,CardMedia,CardContent,Typography,CardActions,Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Select } from '@material-ui/core';
 import { MenuItem,FormControl,InputLabel,FormHelperText } from '@material-ui/core';
-import functionGetLand from '/Users/Santiago/Desktop/React - Farm/react-farm/src/commons/methods/land/functionGetLand'
 import './getAnimal.css';
 
 
@@ -52,15 +51,17 @@ function GetAnimal() {
       const handleOpen = () => {
         setOpen(true);
     };
-    {open && //get de lands
+
+    function ShowLand (){
         axios.get(URL,{ headers: { "Authorization" : `Token ${token}`}})
             .then(res=>{
-  /*               console.log(res);
-   */              setGetLands(res.data);
+                console.log(res);
+                setGetLands(res.data);
             })
             .catch(err=>{
                 console.log(err);
             })
+            setOpen(false);
     }
 
     function LandSelect(event){ //selector de fincas
@@ -92,22 +93,17 @@ function GetAnimal() {
 
     const[posts, setPosts]=useState([]);
 
-/*     useEffect(()=>{
-        const api = `${URL}${idSelecter}/animals/`; 
-        axios.get(api,{ headers: { "Authorization" : `Token ${token}`}})
+    const removeData = (id) => {
+
+        console.log(`${URL}${idSelecter}/animals/${id}/`);
+        axios.delete(`${URL}${idSelecter}/animals/${id}/`,{ headers: { "Authorization" : `Token ${token}`}})
             .then(res=>{
-/*                 console.log(res);
-                setPosts(res.data);
+                window.location.reload();
             })
             .catch(err=>{
                 console.log(err);
-            })
-    }) */
-
-    const removeData = (id) => {
-
-        console.log(`${URL}${idSelecter}/animals/${id}/`)
-        axios.delete(`${URL}${idSelecter}/animals/${id}/`,{ headers: { "Authorization" : `Token ${token}`}})
+            })            
+            
     }
 
 
@@ -148,6 +144,7 @@ function GetAnimal() {
     
     return (
         <div>
+            {open && ShowLand()}
             <div className="get-container">
                 <div className="get-content">
                     <Button size="small" variant ="contained" color="primary" onClick={handleOpen}>

@@ -1,22 +1,54 @@
 import React, { useState } from 'react';
-import { TextField } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import Title from '../login/components/title/title';
 import Input from '../home/farm_components/Input';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Dialog,DialogContent,DialogContentText,DialogTitle,DialogActions } from '@mui/material';
+import { Card,CardActions } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import { Save } from '@material-ui/icons';
+import bkder from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/breedsbg.png';
+import pastoback from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/pastoback.png'
+
+
+import './Breeds.css'
 
 const apiUrl = 'https://farm-management.xyz/breeds/';
 
 
+const useStyles = makeStyles((theme) => ({
+
+    root: {
+        minWidth:300,
+        margin:"1em",
+        boxSizing:"border-box",
+        maxWidth: 500,
+        minHeight:300,
+        maxHeight:400,
+        backgroundColor:"#FFFFFF",
+    },
+
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+    
+  }));
 const Breeds = () => {
+    const classes = useStyles();
     const [name, setName] = useState('');
     const [description, setDescription]=useState('');
     const [purpose, setPurpose] = useState('');
     const history=useHistory();
+    const [isSuccessfully, setIsSuccessfully] = useState(false);
+    const [open, setOpen] = useState(false);
 
-
+    const handleClose = () => {
+        setOpen(false);
+        setIsSuccessfully(false);
+      };
 
     const Back = () =>{
         history.push('/home')
@@ -34,6 +66,9 @@ const Breeds = () => {
         }
     }
 
+    const btnDisabled = name.length > 0 && purpose.length > 0  && description.length > 0; // this three conditions should have filled for activate the button submmit. 
+
+
     function handleSubmit (){
         let breed = {name,description,purpose}
         let token = localStorage.getItem('token');
@@ -50,6 +85,7 @@ const Breeds = () => {
             if(response.status == 201){
                 console.log("tas bien");
                 console.log(response.data);
+                setIsSuccessfully(true);
             }else{
                 console.log('tas mal');
             }
@@ -63,8 +99,13 @@ const Breeds = () => {
     }
         return (
             <div>
-                <div className='farm-container'>
-                    <div className='farm-content'>
+                <div className='breed-container'>
+                <div className='inline'>
+                    <img className= 'side-back'src={pastoback} alt="bk" width="500" height="500"></img>
+                    <img className= 'home-background'src={bkder} alt="bk" width="500" height="500"></img>
+                </div>                    
+                    <div className='breed-content'>
+                    <Card className={classes.root} >
                         <Title text='Breed Create'/>
                         <Input 
                             attribute={{
@@ -101,17 +142,37 @@ const Breeds = () => {
                             handleChange={handleChange}
                         />
 
-                    <div >
-                        <Button variant="contained" color="primary" onClick={handleSubmit}>
+                    <CardActions> 
+                        <Button variant="contained" color="primary"startIcon={<Save/>} disabled={!btnDisabled} onClick={handleSubmit}>
                             Crear
                         </Button>
-                    </div>
-
-                    <Button variant="contained" color="primary" startIcon={<ArrowBackIcon/>} onClick={Back}>
+                    </CardActions> 
+                    <CardActions> 
+                    <Button variant="contained" color="secondary" startIcon={<ArrowBackIcon/>} onClick={Back}>
                             Volver
                     </Button>                                       
-                    </div>
+                    </CardActions> 
+                    </Card>
 
+                    <Dialog
+                          open={isSuccessfully}
+                          onClose={handleClose}
+                          aria-labelledby="alert-dialog-title"
+                          aria-describedby="alert-dialog-description"
+                        >
+                        <DialogTitle id="alert-dialog-title">
+                          {"Su raza: "}{name} {" Ha sido creado"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Se encuentra disponible para su uso
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}autoFocus>Cerrar</Button>
+                        </DialogActions>                    
+                    </Dialog>                     
+                    </div>
                 </div>
             </div>
         )

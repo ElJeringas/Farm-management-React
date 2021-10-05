@@ -1,0 +1,41 @@
+.breed-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background: #eb772a6c;
+    position: absolute;
+
+}
+
+.breed-content{
+    left: 30rem;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin:auto;
+    position: absolute;
+}
+
+.inline{
+
+    text-align:center;
+    vertical-align:bottom;
+}
+.home-background{
+    display: block;
+    position: absolute;
+    left: 0rem;
+    bottom: 1rem;
+}
+
+.side-back{
+
+    display: block;
+    position: absolute;
+    right: 0rem;
+    bottom: 1rem;
+}

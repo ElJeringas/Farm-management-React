@@ -1,5 +1,4 @@
 import React,{useState,useEffect} from 'react'
-import './createAnimal.css';
 import { Typography } from '@material-ui/core';
 import InputAnimal from './InputAnimal';
 import { useHistory } from 'react-router-dom';
@@ -10,12 +9,12 @@ import { Save } from '@material-ui/icons';
 import axios from 'axios';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { makeStyles } from '@material-ui/core';
-import PropTypes from 'prop-types';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import { Select } from '@material-ui/core';
 import { MenuItem,FormControl,InputLabel,FormHelperText } from '@material-ui/core';
+import { Dialog,DialogContent,DialogContentText,DialogTitle,DialogActions } from '@mui/material';
+import backg from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/paddockbg.png'
+import bro from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/Shared goals-bro.png'
+import './createAnimal.css';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,25 +26,13 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 800,
         minHeight:500,
         maxHeight:800,
-        backgroundColor:"#FFF8DC",
+        backgroundColor:"#FFFFFF",
     },
 
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
     },
-
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-      },
     
   }));
 
@@ -81,38 +68,6 @@ const CssTextField = withStyles({
   })(TextField);
 
 
-
-  const Fade = React.forwardRef(function Fade(props, ref) {
-    const { in: open, children, onEnter, onExited, ...other } = props;
-    const style = useSpring({
-      from: { opacity: 0 },
-      to: { opacity: open ? 1 : 0 },
-      onStart: () => {
-        if (open && onEnter) {
-          onEnter();
-        }
-      },
-      onRest: () => {
-        if (!open && onExited) {
-          onExited();
-        }
-      },
-    });
-  
-    return (
-      <animated.div ref={ref} style={style} {...other}>
-        {children}
-      </animated.div>
-    );
-  });
-  
-  Fade.propTypes = {
-    children: PropTypes.element,
-    in: PropTypes.bool.isRequired,
-    onEnter: PropTypes.func,
-    onExited: PropTypes.func,
-  };
-
 const Animal = () => {
     const classes = useStyles();
     const [name, setName] = useState('');
@@ -120,12 +75,15 @@ const Animal = () => {
     const history=useHistory();
     const [idSelecter, setIdSelecter] = useState('')
     const[gender, setGender] = useState('');
-    const[weight, setWeight] = useState('');
+    const [isSuccessfully, setIsSuccessfully] = useState(false);
+
+/*     const[weight, setWeight] = useState(''); */
 /*     const [breed, setBreed] = useState(''); */
    // const [group, setGroup] = useState('');
+   
    let token = localStorage.getItem('token');
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     
     const URL = "https://farm-management.xyz/lands/" //url de land
     const[getLands, setGetLands]=useState([]);
@@ -139,31 +97,22 @@ const Animal = () => {
       setisOpen(true);
   };
 
-  {isOpen && //get de lands
+  function ShowLand (){
     axios.get(URL,{ headers: { "Authorization" : `Token ${token}`}})
         .then(res=>{
-/*               console.log(res);
-*/              setGetLands(res.data);
+            console.log(res);
+            setGetLands(res.data);
         })
         .catch(err=>{
             console.log(err);
         })
+        setisOpen(false);
 }
 
     function LandSelect(event){ //selector de fincas
       const id = event.target.value;
       setIdSelecter(id);
-/*       console.log(id);
-      const api = `${URL}${id}/animals/`; 
-      axios.get(api,{ headers: { "Authorization" : `Token ${token}`}})
-          .then(res=>{
-              setPosts(res.data);
-          })
-          .catch(err=>{
-              console.log(err);
-          })
-          setisOpen(true); */
-  }
+    }
   
   const renderBody = () => {
     return getLands && getLands.map(({id,name}) => {
@@ -176,6 +125,7 @@ const Animal = () => {
   
     const handleClose = () => {
       setOpen(false);
+      setIsSuccessfully(false);
     };
 
     const Back = () =>{
@@ -186,14 +136,13 @@ const Animal = () => {
         const [picture,setPicture]=useState();
         
         function fileSelected(event){
-            const file = event.target.files[0];
             setPicture(event.target.files[0]);
         }
 
     function handleChange(valid, value){
         if(valid === 'name'){
             setName(value)
-
+            
         }
 
         if(valid === 'birth_date'){
@@ -203,29 +152,18 @@ const Animal = () => {
         if(valid === 'gender'){
             setGender(value);
         }
-/*         if(valid === 'weight'){
-            setWeight(value);
-        }
-        if (valid === 'breed'){
-            setBreed(value)
-        }
-        if (valid === 'group'){
-            setGroup(value)
-        } */
     }
 
+    const btnDisabled = name.length > 0 && birth_date.length > 0  && gender.length > 0 && idSelecter > 0; // this three conditions should have filled for activate the button submmit. 
 
 
     function handleSubmit(){
         let token = localStorage.getItem('token');
-        let account = {name,birth_date,gender};
         let formData = new FormData();
         formData.append('name',name)
         formData.append('birth_date',birth_date)
         formData.append('picture',picture)
         formData.append('gender',gender)
-
-
 
         const api = `${URL}${idSelecter}/animals/`; 
 
@@ -235,7 +173,7 @@ const Animal = () => {
             if(response.status == 201){
                 console.log("tas bien");
                 console.log(response.data);
-                setOpen(true);
+                setIsSuccessfully(true);
             }
         } )
         .catch( (error) =>{
@@ -246,9 +184,14 @@ const Animal = () => {
 
 
     }
-    const StyledButton = withStyles({
+    //este codigo servira para el maquetado de los botonoes
+/*     const StyledButton = withStyles({
+        disabled:{
+          background:'#808080',
+          backgroundColor:'#FFFFFF'
+        },
         root: {
-          background: 'linear-gradient(45deg, #23395d 30%, #1c2e4a 90%)',
+          background: '#ADD8E6',
           borderRadius: 3,
           border: 0,
           color: 'white',
@@ -263,11 +206,16 @@ const Animal = () => {
           textTransform: 'capitalize',
         },
     })(Button);
-
+ */
    
         return (
             <div>
+              {isOpen && ShowLand()}
                 <div className='animal-container'>
+                <div className='inline'>
+                    <img className= 'side-back'src={backg} alt="bk" width="500" height="500"></img>
+                    <img className= 'home-background'src={bro} alt="bk" width="500" height="500"></img>
+                </div>
                     <div className='animal-content'>
                         <Card className={classes.root} >
                         <Typography align='center' variant='h5'>
@@ -320,38 +268,36 @@ const Animal = () => {
                           <FormHelperText>Seleccionar Finca</FormHelperText>
                         </FormControl>
                         <CardActions>                                 
-                        <StyledButton startIcon={<Save/>} onClick={handleSubmit}>
+                        <Button variant="contained" color="primary" startIcon={<Save/>} disabled={!btnDisabled} onClick={handleSubmit}>
                             Save
-                        </StyledButton>
-                        <StyledButton variant= "outlined" startIcon={<ArrowBackIcon/>} onClick={Back}>
+                        </Button>
+                        <Button variant="contained" color="secondary" startIcon={<ArrowBackIcon/>} onClick={Back}>
                             Volver
-                        </StyledButton>
+                        </Button>
                         </CardActions>
                         </Card>
-
-
+                        {getLands.map(card=>(
+                        <Dialog
+                          open={isSuccessfully}
+                          onClose={handleClose}
+                          aria-labelledby="alert-dialog-title"
+                          aria-describedby="alert-dialog-description"
+                        >
+                        <DialogTitle id="alert-dialog-title">
+                          {"Su animal: "}{name} {" Ha sido creado"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Animal creado! se encuentra en la finca: {card.name}
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}autoFocus>Cerrar</Button>
+                        </DialogActions>                    
+                        </Dialog>   
+                        ))}                     
                     </div>
                 </div>
-
-                <Modal
-                    aria-labelledby="spring-modal-title"
-                    aria-describedby="spring-modal-description"
-                    className={classes.modal}
-                    open={open}
-                    onClose={handleClose}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={open}>
-                        <div className={classes.paper}>
-                            <h2 id="spring-modal-title">Animal creado</h2>
-                            <p id="spring-modal-description">su animal: {name}, ha sido creado exitosamente </p>  {/* falta agregar id finca */}
-                        </div> 
-                    </Fade>
-                </Modal>
             </div>
         )
     

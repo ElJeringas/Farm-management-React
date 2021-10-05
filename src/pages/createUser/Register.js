@@ -11,53 +11,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
-
-const useStyles = makeStyles((theme) => ({
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-  }));
-  
-  const Fade = React.forwardRef(function Fade(props, ref) {
-    const { in: open, children, onEnter, onExited, ...other } = props;
-    const style = useSpring({
-      from: { opacity: 0 },
-      to: { opacity: open ? 1 : 0 },
-      onStart: () => {
-        if (open && onEnter) {
-          onEnter();
-        }
-      },
-      onRest: () => {
-        if (!open && onExited) {
-          onExited();
-        }
-      },
-    });
-  
-    return (
-      <animated.div ref={ref} style={style} {...other}>
-        {children}
-      </animated.div>
-    );
-  });
-
-
-  Fade.propTypes = {
-    children: PropTypes.element,
-    in: PropTypes.bool.isRequired,
-    onEnter: PropTypes.func,
-    onExited: PropTypes.func,
-  };
-
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 
@@ -69,13 +28,14 @@ const Register = () =>{
     const[phone_number, setPhone] = useState('');
     const[password, setPassword] = useState('');
     const [password_confirmation, setConfPass] = useState('');
+    const [token, setToken] = useState('');
+    const [phone_code, setPhone_code] = useState('');
     const history=useHistory();
 
 
     //******************* */
 
-    const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
   
 /*     const handleOpen = () => {
       setOpen(true);
@@ -111,10 +71,19 @@ const Register = () =>{
         if(valid === 'phone_number'){
             setPhone(value);
         }
-        if (valid === 'password_confirmation'){
-            setConfPass(value)
-        }
+     
     }
+
+    function handleChangeVerifyPhone(e){
+            setPhone_code(e.target.value);
+            console.log(phone_code);
+
+    }
+
+    function handleChangeVerifyToken(e){
+        setToken(e.target.value);
+        console.log(token);
+}
 
     function handleSubmit(){
         let account = {username,name,email,phone_number,password,password_confirmation}
@@ -125,6 +94,7 @@ const Register = () =>{
             if(response.status == 201){
                 console.log("tas bien");
                 setOpen(true);
+                
             }
 		} )
         .catch( (error) =>{
@@ -134,8 +104,40 @@ const Register = () =>{
  */        })
     }
 
+    function Verify(){
+        console.log(token,phone_code);
+        
+        Axios.post(`https://farm-management.xyz/users/verify/`, token,{ headers: {"Content-type": "application/json"} })
+		.then( ( response ) => {
+			console.log( response.status)
+            if(response.status == 201){
+                console.log("tas bien");
+                setOpen(true);
+                
+            }
+		} )
+        .catch( (error) =>{
+            // handle error
+            console.log(error);
+/*             setOpen(true);
+ */        }) 
+        Axios.post(`https://farm-management.xyz/users/${username}/`, phone_code,{ headers: {"Content-type": "application/json", "Authorization" : `Token ${token}`} })
+		.then( ( response ) => {
+			console.log( response.status)
+            if(response.status == 201){
+                console.log("tas bien");
+                setOpen(true);
+                
+            }
+		} )
+        .catch( (error) =>{
+            // handle error
+            console.log(error);
+/*             setOpen(true);
+ */        })        
+    }
     
-    /* @@@@@@@ */
+ 
      
 
     const StyledButton = withStyles({
@@ -157,8 +159,6 @@ const Register = () =>{
         },
     })(Button);
 
-
-    /* @@@@@@@ */
    
         return (
             <div>
@@ -234,30 +234,45 @@ const Register = () =>{
                         <div className='register-container'>
                             ¿Ya tienes una cuenta?
                             <Button color="secondary" onClick={()=> logeo() }>Entrar</Button>
-                        </div>                
+                        </div>
+                        <Dialog open={true} onClose={handleClose}>
+                            <DialogTitle>Codigo de verificacion</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                Para registrarse en esta aplicación, por favor introduce el código de verificación que te enviamos 
+                                a tu teléfono y correo electrónico y pulsa el botón de enviar.
+                                </DialogContentText>
+                                    <TextField
+                                        autoFocus
+                                        margin="dense"
+                                        id="codePhone"
+                                        name="codePhone"
+                                        label="Código de verificación teléfono"
+                                        type="text"
+                                        fullWidth
+                                        variant="standard"
+                                        onChange={handleChangeVerifyPhone} 
+                                    />
+                                    <TextField
+                                        autoFocus
+                                        margin="dense"
+                                        id="codeMail"
+                                        name="codeMail"
+                                        label="Código de verificación email"
+                                        type="text"
+                                        fullWidth
+                                        variant="standard"
+                                        onChange={handleChangeVerifyToken} 
+                                    />                                    
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleClose}>Cerrar</Button>
+                                    <Button onClick={Verify}>Enviar</Button>
+                                </DialogActions>
+                        </Dialog>       
                     </div>
                 </div>
-                
-                <Modal
-                    aria-labelledby="spring-modal-title"
-                    aria-describedby="spring-modal-description"
-                    className={classes.modal}
-                    open={open}
-                    onClose={handleClose}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={open}>
-                        <div className={classes.paper}>
-                            <h2 id="spring-modal-title">Registro exitoso!</h2>
-                            <p id="spring-modal-description">Revise bandeja de entrada del correo para validar la verificacion de su usuario</p>
-                        </div>
-                    </Fade>
-                </Modal>
-
+    
             </div>
         )
     

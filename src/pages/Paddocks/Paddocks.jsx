@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Button } from '@material-ui/core';
+import { Button,CardActions,Card,Typography } from '@material-ui/core';
 import axios from 'axios';
 import Title from '../login/components/title/title';
 import Input from '../home/farm_components/Input';
@@ -11,11 +11,32 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import BackupIcon from '@material-ui/icons/Backup';
 import RemoveRedEyeOutlinedIcon from '@material-ui/icons/RemoveRedEyeOutlined';
 import { Dialog,DialogContent,DialogContentText,DialogTitle,DialogActions } from '@mui/material';
+import { Avatar } from '@material-ui/core';
+import farmicon from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/034-horse.png'
+import paddockbk from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/paddockbg.png'
+import pasto from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/pastoback.png'
 
+import './Paddocks.css';
 
 const useStyles = makeStyles((theme) => ({
-
     root: {
+        minWidth:400,
+        margin:"1em",
+        padding:50,
+        boxSizing:"border-box",
+        maxWidth: 345,
+        minHeight:500,
+        maxHeight:700,
+    },
+    media: {
+        minWidth:"100px",
+        minHeight: 100,
+        maxHeight:120,
+        backgroundPosition:"top",
+        backgroundAttachment:"top",
+        paddingBottom:10,
+    },
+/*     root: {
         minWidth:"500px",
         margin:"1em",
         boxSizing:"border-box",
@@ -28,7 +49,16 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
-    },
+    }, */
+
+    sizeAvatar: {
+        height: theme.spacing(10),
+        width: theme.spacing(10),
+        justifyContent:"center",
+        alignContent:"center",
+        alignItems:"center",
+        margin:"auto",
+      },
 }));
 
 const Paddocks = ()=> {
@@ -127,11 +157,19 @@ const Paddocks = ()=> {
 
     }
 
-    
         return (
-            <div>
+            <div className='pdk-container'>
+                <div className='inline'>
+                    <img className= 'side-back'src={paddockbk} alt="bk" width="500" height="500"></img>
+                    <img className= 'home-background'src={pasto} alt="bk" width="500" height="500"></img>
+                </div>
+
+                <div className='pdk-content'>
                 {open && ShowLand()}
-                <Title text={'Crear Potreros'}/>
+                <Card className={classes.root} >
+                <Typography align='center' variant='h5'>
+                            Crear Potrero
+                        </Typography>
                 <Input
                     attribute={{
                         id:'name',
@@ -178,17 +216,38 @@ const Paddocks = ()=> {
                     </Select>
                     <FormHelperText>Seleccionar Finca</FormHelperText>
                 </FormControl>
+                <CardActions>  
+                <Button variant="contained" color="primary" disabled={!btnDisabled} startIcon={<BackupIcon/>}onClick={handleSubmit}>
+                    Crear
+                </Button>
+                </CardActions>  
+                <CardActions>
+                <Button variant="contained" color="primary" startIcon={<ArrowBackIcon/>} onClick={Back}>
+                    Volver
+                </Button>
+                <Button variant="contained" color="secondary" startIcon={<RemoveRedEyeOutlinedIcon/>} onClick={Back}>
+                    Ver Potreros
+                </Button>    
+                </CardActions>
+                </Card> 
 
-                <Dialog
+            <Dialog
                         open={isSuccessfully}
                         onClose={handleIsClose}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >
                     <DialogTitle id="alert-dialog-title">
+                    <Avatar className={classes.sizeAvatar}
+                            alt="Farm"
+                            src={farmicon}
+                            sx={{ width: 500, height: 500 }}
+                        />
                         {"Potrero creado en la finca: "}{idSelecter}
+
                     </DialogTitle>
                     <DialogContent>
+
                         <DialogContentText id="alert-dialog-description">
                            Potrero {name} creado!
                         </DialogContentText>
@@ -197,21 +256,7 @@ const Paddocks = ()=> {
                         <Button onClick={handleIsClose}autoFocus>Cerrar</Button>
                     </DialogActions>                    
                 </Dialog>
-
-            <div >
-                <Button variant="contained" color="primary" disabled={!btnDisabled} startIcon={<BackupIcon/>}onClick={handleSubmit}>
-                    Crear
-                </Button>
             </div>
-            <div>
-                <Button variant="contained" color="primary" startIcon={<ArrowBackIcon/>} onClick={Back}>
-                    Volver
-                </Button>
-                <Button variant="contained" color="secondary" startIcon={<RemoveRedEyeOutlinedIcon/>} onClick={Back}>
-                    Ver grupos
-                </Button>                     
-            </div>    
-              
             </div>
         )
     

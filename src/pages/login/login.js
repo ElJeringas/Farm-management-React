@@ -9,6 +9,8 @@ import { makeStyles } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { InputAdornment } from '@material-ui/core';
 import { IconButton } from '@material-ui/core';
+import farmer from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/Rancher-rafiki.png'
+import logo from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/002-farmer.png'
 import './login.css';
 
 
@@ -47,6 +49,7 @@ const Login = () => {
                 console.log(response.data["token"]);
                 let token = response.data["token"];
                 localStorage.setItem('token',token);
+                localStorage.setItem('user',username);
                 setIsLogin(true);
                 history.push('/home');
 
@@ -83,9 +86,12 @@ const Login = () => {
         <div>
 
     <div className='login-container'>
-    <div className='login-content'>
+    <img className= 'wallpaper-background'src={farmer} alt="logo" width="500" height="500"></img>
 
-        <Title text='Farm Management'/>
+    <div className='login-content'>
+        <img className= 'icon-login' src={logo} alt="logo" width="100" height="100"></img>
+
+        {/* <Title text='Farm Management'/> */}
 
         { hasError &&
                 <label className='label-alert'>

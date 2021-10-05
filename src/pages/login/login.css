@@ -2,13 +2,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* align-items: center; */
     width: 100%;
     height: 100vh;
-    background: white;
-/*     background-image: url('c:/Users/Santiago/Desktop/Ruray/login-ruray-web/src/assets/images/fondo.jpg');
-    background-size: 100%;
-    background-position: absolute; */
+    background: #eb772a6c;
+
 }
 
 .login-content{
@@ -54,4 +51,18 @@
 
 .register-button-container{
     float: left;
+}
+
+.wallpaper-background{
+    display: block;
+    margin-left: auto;
+    float: right;
+
+}
+
+.icon-login{
+    display: block;
+    margin: 1em;
+    float: none;
+
 }

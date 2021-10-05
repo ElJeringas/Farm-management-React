@@ -1,6 +1,6 @@
 import React , {useState} from 'react';
 import axios from "axios";
-import { Button } from '@material-ui/core';
+import { Button,CardActions,Card,Typography } from '@material-ui/core';
 /* import functionGetLand from '/Users/Santiago/Desktop/React - Farm/react-farm/src/commons/methods/land/functionGetLand';*/
 import Input from '../home/farm_components/Input';
 import { useHistory } from 'react-router-dom';
@@ -12,16 +12,19 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import BackupIcon from '@material-ui/icons/Backup';
 import RemoveRedEyeOutlinedIcon from '@material-ui/icons/RemoveRedEyeOutlined';
 import { Dialog,DialogContent,DialogContentText,DialogTitle,DialogActions } from '@mui/material';
-
+import gruposbg from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/gruposbg.png'
+import bkder from 'C:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/gruposbkder.png'
+import './Groups.css'
 
 const useStyles = makeStyles({
     
     root: {
         minWidth:"350px",
-        margin:"1em",
+        margin:"9em",
+        padding:50,
         boxSizing:"border-box",
         maxWidth: 345,
-        minHeight:200,
+        minHeight:500,
         maxHeight:300,
     },
     media: {
@@ -31,6 +34,13 @@ const useStyles = makeStyles({
         backgroundPosition:"top",
         backgroundAttachment:"top",
     },
+    formControl:{
+        padding:5,
+        alignContent:"center",
+        
+    },
+
+
   });
 
 const Groups  =()=>  {
@@ -160,8 +170,14 @@ const Groups  =()=>  {
 
     return (
         
-        <div>
+        <div className='group-container'>
+                <div className='inline'>
+                    <img className= 'side-back'src={gruposbg} alt="bk" width="500" height="500"></img>
+                    <img className= 'home-background'src={bkder} alt="bk" width="500" height="500"></img>
+                </div>
+            <div className='group-content'>
             {open && ShowLand()}
+            <Card className={classes.root} >
             <Title text={'Crear Grupos'}/>
             <Input
                 attribute={{
@@ -197,7 +213,7 @@ const Groups  =()=>  {
                           </Select>
                         <FormHelperText>Seleccionar finca</FormHelperText>
                     </FormControl>
-                    <div>
+                    
                         <FormControl className={classes.formControl}>
                             <InputLabel id="demo-simple-select-autowidth-label">Potrero</InputLabel>
                             <Select
@@ -215,41 +231,39 @@ const Groups  =()=>  {
                           </Select>
                             <FormHelperText>Seleccionar potrero</FormHelperText>
                         </FormControl>
-                    </div>
-                    <Dialog
-                        open={isSuccessfully}
-                        onClose={handleClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                    <DialogTitle id="alert-dialog-title">
-                        {"Grupo creado en el potrero: "}{location}
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Grupo creado!
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}autoFocus>Cerrar</Button>
-                    </DialogActions>                    
-                    </Dialog>
-
-
-            <div >
+                <CardActions> 
                 <Button variant="contained" color="primary" /* disabled={true} */disabled={!btnDisabled} startIcon={<BackupIcon/>} onClick={handleSubmit}>
                     Crear
                 </Button>
-            </div>
-            <div>
+            </CardActions>
+            <CardActions> 
                 <Button variant="contained" color="primary" startIcon={<ArrowBackIcon/>} onClick={Back}>
                     Volver
-                </Button>     
-            </div>
-            <div>
-                <Button variant="contained" color="secondary" startIcon={<RemoveRedEyeOutlinedIcon/>} onClick={Back}>
+                </Button>   
+                <Button style={{textTransform: 'none'}} variant="contained" color="secondary"  startIcon={<RemoveRedEyeOutlinedIcon/>} onClick={Back}>
                     Ver grupos
-                </Button>
+                </Button>  
+            </CardActions> 
+            </Card>
+
+            <Dialog
+                    open={isSuccessfully}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                 <DialogTitle id="alert-dialog-title">
+                    {"Grupo creado en el potrero: "}{location}
+                </DialogTitle>
+                <DialogContent >
+                    <DialogContentText id="alert-dialog-description">
+                            Grupo creado!
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}autoFocus>Cerrar</Button>
+                </DialogActions>                    
+            </Dialog>            
             </div>
         </div>
     )

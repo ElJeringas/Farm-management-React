@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import breed from 'c:/Users/Santiago/Desktop/React - Farm/react-farm/src/assets/images/breed.png';
+import moment from "moment";
 
 
 const useStyles = makeStyles({
@@ -36,8 +37,10 @@ export default function GetBreeds() {
     }
     let token = localStorage.getItem('token');
     const[posts, setPosts]=useState([]);
+    const [open, setOpen] = useState(true);
 
-    useEffect(()=>{
+
+    function ShowBreeds (){
         axios.get(URL,{ headers: { "Authorization" : `Token ${token}`}})
             .then(res=>{
                 console.log(res);
@@ -46,7 +49,8 @@ export default function GetBreeds() {
             .catch(err=>{
                 console.log(err);
             })
-    })
+            setOpen(false);
+    }
 
     const removeData = (id) => {
 
@@ -57,8 +61,6 @@ export default function GetBreeds() {
     const renderBody = () => {
         return posts && posts.map(({ id, name, purpose, description,created,modified }) => {
             return (
-
-                
                 <Card className={classes.root} >
                 <CardMedia className={classes.media} image={breed} title="land"/>
                 <CardContent>
@@ -72,10 +74,10 @@ export default function GetBreeds() {
                         <b>Proposito:</b> {purpose}
                     </Typography>
                     <Typography variant="body2" component="p">
-                        <b>Creada:</b> {created}
+                        <b>Creada:</b> {/* {created} */}{moment(created).format("MMMM Do YYYY")}{" "}
                     </Typography>
                     <Typography variant="body2" component="p">
-                        <b>Modificada:</b> {modified}
+                        <b>Modificada:</b> {/* {modified} */}{moment(modified).fromNow()}
                     </Typography>                                                                                                
                     <Typography variant="caption" component="p" align="right">
                         <b>id:</b> {id}
@@ -93,6 +95,7 @@ export default function GetBreeds() {
 
     return (
         <div>
+            {open && ShowBreeds()}
             <div className="get-container">
                 <div className="get-content"> 
                     {renderBody()}
