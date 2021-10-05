@@ -1,0 +1,43 @@
+{
+  "files": {
+    "main.css": "/Farm-management-React/static/css/main.4ca0a1b3.chunk.css",
+    "main.js": "/Farm-management-React/static/js/main.fad5e274.chunk.js",
+    "main.js.map": "/Farm-management-React/static/js/main.fad5e274.chunk.js.map",
+    "runtime-main.js": "/Farm-management-React/static/js/runtime-main.7a8908f9.js",
+    "runtime-main.js.map": "/Farm-management-React/static/js/runtime-main.7a8908f9.js.map",
+    "static/js/2.a0ec64f5.chunk.js": "/Farm-management-React/static/js/2.a0ec64f5.chunk.js",
+    "static/js/2.a0ec64f5.chunk.js.map": "/Farm-management-React/static/js/2.a0ec64f5.chunk.js.map",
+    "static/js/3.46917afd.chunk.js": "/Farm-management-React/static/js/3.46917afd.chunk.js",
+    "static/js/3.46917afd.chunk.js.map": "/Farm-management-React/static/js/3.46917afd.chunk.js.map",
+    "index.html": "/Farm-management-React/index.html",
+    "static/css/main.4ca0a1b3.chunk.css.map": "/Farm-management-React/static/css/main.4ca0a1b3.chunk.css.map",
+    "static/js/2.a0ec64f5.chunk.js.LICENSE.txt": "/Farm-management-React/static/js/2.a0ec64f5.chunk.js.LICENSE.txt",
+    "static/media/002-farmer.acc13b8d.png": "/Farm-management-React/static/media/002-farmer.acc13b8d.png",
+    "static/media/014-barn.30e046e4.png": "/Farm-management-React/static/media/014-barn.30e046e4.png",
+    "static/media/030-sheep.f686cf13.svg": "/Farm-management-React/static/media/030-sheep.f686cf13.svg",
+    "static/media/031-cow.557ba5b5.png": "/Farm-management-React/static/media/031-cow.557ba5b5.png",
+    "static/media/034-horse.5e4f344e.png": "/Farm-management-React/static/media/034-horse.5e4f344e.png",
+    "static/media/034-horse.ec7111d5.svg": "/Farm-management-React/static/media/034-horse.ec7111d5.svg",
+    "static/media/035-chicken.714d6b2e.png": "/Farm-management-React/static/media/035-chicken.714d6b2e.png",
+    "static/media/Rancher-rafiki.db328de4.png": "/Farm-management-React/static/media/Rancher-rafiki.db328de4.png",
+    "static/media/Shared goals-bro.5af7bd45.png": "/Farm-management-React/static/media/Shared goals-bro.5af7bd45.png",
+    "static/media/breedsbg.4aa573a7.png": "/Farm-management-React/static/media/breedsbg.4aa573a7.png",
+    "static/media/corralito.e04d444d.png": "/Farm-management-React/static/media/corralito.e04d444d.png",
+    "static/media/countryside.4d0f55c1.png": "/Farm-management-React/static/media/countryside.4d0f55c1.png",
+    "static/media/farmicon.8a764055.png": "/Farm-management-React/static/media/farmicon.8a764055.png",
+    "static/media/gruposbg.acf23ee5.png": "/Farm-management-React/static/media/gruposbg.acf23ee5.png",
+    "static/media/gruposbkder.13a99c0b.png": "/Farm-management-React/static/media/gruposbkder.13a99c0b.png",
+    "static/media/homeizq.9bfaa9b7.png": "/Farm-management-React/static/media/homeizq.9bfaa9b7.png",
+    "static/media/land.3bf25dd6.gif": "/Farm-management-React/static/media/land.3bf25dd6.gif",
+    "static/media/landback.d9ab8291.png": "/Farm-management-React/static/media/landback.d9ab8291.png",
+    "static/media/landimage.b05fa551.png": "/Farm-management-React/static/media/landimage.b05fa551.png",
+    "static/media/paddockbg.660162b4.png": "/Farm-management-React/static/media/paddockbg.660162b4.png",
+    "static/media/pastoback.7f896b61.png": "/Farm-management-React/static/media/pastoback.7f896b61.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7a8908f9.js",
+    "static/js/2.a0ec64f5.chunk.js",
+    "static/css/main.4ca0a1b3.chunk.css",
+    "static/js/main.fad5e274.chunk.js"
+  ]
+}
